@@ -25,7 +25,7 @@ class NodeViewModel @Inject constructor(
 
     private var _state: MutableStateFlow<TreeStructureUiState<NodeModel>> =
         MutableStateFlow(TreeStructureUiState.Empty)
-    val state = _state.asStateFlow()
+    val state: StateFlow<TreeStructureUiState<NodeModel>> = _state.asStateFlow()
 
 
     suspend fun createNode(node: Node): Long {
@@ -34,19 +34,18 @@ class NodeViewModel @Inject constructor(
 
     fun getNodes(parentId: Long) {
         viewModelScope.launch {
-            getChildNodesUseCase(parentId).collectLatest { list ->
-                _state.value = if (list.isEmpty()) {
-                    TreeStructureUiState.Empty
-                } else {
-                    val parent = getNodeByIdUseCase(parentId).first()
-                    TreeStructureUiState.Success(
-                        NodeModel(
-                            parent = parent,
-                            isRootNode = parentId == 1L,
-                            childNodes = list
-                        )
+            getChildNodesUseCase(parentId).distinctUntilChanged().filter {
+                it.isNotEmpty()
+            }.collectLatest { list ->
+                Log.d("ERROR", list.toString())
+                val parent = getNodeByIdUseCase(parentId).first()
+                _state.value = TreeStructureUiState.Success(
+                    NodeModel(
+                        parent = parent,
+                        isRootNode = parentId == 1L,
+                        childNodes = list
                     )
-                }
+                )
             }
         }
     }

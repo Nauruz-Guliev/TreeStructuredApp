@@ -7,7 +7,7 @@ import com.example.treestructure.presentation.model.Node
 
 
 class NodeListAdapter(
-    private val onNodeClicked: ((Long) -> Unit)?
+    private val onNodeClicked: ((Long?) -> Unit)?
 ) : ListAdapter<Node, NodeListViewHolder>(differ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NodeListViewHolder =
         NodeListViewHolder.create(parent, onNodeClicked)

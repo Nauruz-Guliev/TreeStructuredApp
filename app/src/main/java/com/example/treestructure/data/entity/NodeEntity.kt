@@ -12,7 +12,7 @@ import java.util.*
         parentColumns = arrayOf("id"),
         childColumns = arrayOf("parent_id"),
         onDelete = CASCADE
-    )], indices = [Index(value = ["parent_id"])],
+    )], indices = [Index(value = ["parent_id"]), Index(value = ["id"], unique = true)],
     tableName = "node"
 )
 data class NodeEntity(

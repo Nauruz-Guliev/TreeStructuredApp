@@ -1,9 +1,9 @@
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+
 }
 
 android {
@@ -62,9 +62,4 @@ dependencies {
     //mapper
     implementation("org.mapstruct:mapstruct-jdk8:$mapStructVersion")
     kapt("org.mapstruct:mapstruct-processor:$mapStructVersion")
-
-    //navargs
-    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion")
-
-
 }

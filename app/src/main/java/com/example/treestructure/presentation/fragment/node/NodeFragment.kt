@@ -2,11 +2,9 @@ package com.example.treestructure.presentation.fragment.node
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -33,7 +31,6 @@ class NodeFragment : Fragment() {
 
     private val args: NodeFragmentArgs by navArgs()
     private var parentId: Long? = null
-
 
     @Inject
     lateinit var viewModel: NodeViewModel
@@ -73,12 +70,12 @@ class NodeFragment : Fragment() {
                     when (uiState) {
                         is TreeStructureUiState.Success<*> -> {
                             binding.btnFab.visibility =
-                                if ((uiState.data as NodeModel).parent != null) {
+                                if ((uiState.data as NodeModel).parent?.parentId != null) {
                                     ViewGroup.VISIBLE
                                 } else {
                                     ViewGroup.GONE
                                 }
-                            adapter?.submitList(uiState.data.childNodes)
+                            adapter?.submitList(uiState.data.childNodes.toList())
                         }
                         TreeStructureUiState.Empty -> {
                             context?.showToast("empty")
@@ -104,25 +101,25 @@ class NodeFragment : Fragment() {
         }
     }
 
-    private fun onNodeClicked(nodeId: Long) {
-        NodeFragmentDirections.actionNodeFragmentSelf(nodeId).also { direction ->
-            findNavController().navigate(direction)
-        }
+    private fun onNodeClicked(nodeId: Long?) {
+        context?.showToast(nodeId)
+        findNavController().navigate(R.id.nodeFragment)
     }
 
     private fun initButtonClickListener() {
         binding.btnFab.setOnClickListener {
-            val parent = (viewModel.state.value as TreeStructureUiState.Success).data.parent
+            val parent = (viewModel.state.value as? TreeStructureUiState.Success)?.data?.parent
             lifecycleScope.launch {
                 viewModel.createNode(
                     Node(
                         level = (parent?.level?.plus(1) ?: 0),
                         createdAt = Calendar.getInstance().time,
                         name = parent?.name.hashCode().toString().takeLast(20),
-                        parentId = parent?.id
+                        parentId = parent?.id ?: 1
                     )
                 )
             }
         }
+        updateList()
     }
 }
