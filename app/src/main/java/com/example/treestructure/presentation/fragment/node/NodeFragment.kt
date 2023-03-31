@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import com.example.treestructure.App
 import com.example.treestructure.R
 import com.example.treestructure.databinding.NodeFragmentBinding
+import com.example.treestructure.presentation.fragment.node.recyclerview.NodeListAdapter
 import javax.inject.Inject
 
 class NodeFragment : Fragment(R.layout.node_fragment) {
@@ -19,10 +20,29 @@ class NodeFragment : Fragment(R.layout.node_fragment) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (activity?.application as App).appComponent.inject(this)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = NodeFragmentBinding.inflate(layoutInflater)
+        initRecyclerView()
+        initButtonClickListener()
+    }
+
+    private fun initRecyclerView() {
+        NodeListAdapter(::onNodeClicked).also {
+            binding.rvNodes.adapter = it
+        }
+    }
+
+    private fun onNodeClicked(nodeId: Long) {
+
+    }
+
+    private fun initButtonClickListener() {
+        binding.fab.setOnClickListener {
+
+        }
     }
 }

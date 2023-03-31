@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.treestructure.presentation.model.Node
 
 
-class NodeListAdapter : ListAdapter<Node, NodeListViewHolder>(differ) {
+class NodeListAdapter(
+    private val onNodeClicked: ((Long) -> Unit)?
+) : ListAdapter<Node, NodeListViewHolder>(differ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NodeListViewHolder =
-        NodeListViewHolder.create(parent)
+        NodeListViewHolder.create(parent, onNodeClicked)
 
     override fun onBindViewHolder(holder: NodeListViewHolder, position: Int) {
         holder.onBind(currentList[position])
