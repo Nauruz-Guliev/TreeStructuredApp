@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/nodeFragment">
+
+    <fragment
+        android:id="@+id/nodeFragment"
+        android:name="com.example.treestructure.presentation.fragment.node.NodeFragment"
+        android:label="NodeFragment" >
+        <action
+            android:id="@+id/action_nodeFragment_self"
+            app:destination="@id/nodeFragment" />
+    </fragment><action android:id="@+id/action_global_nodeFragment" app:destination="@id/nodeFragment"/>
+</navigation>
