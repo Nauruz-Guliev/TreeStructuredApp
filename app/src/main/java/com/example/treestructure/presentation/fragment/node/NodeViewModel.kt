@@ -5,14 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.treestructure.domain.repository.NodesRepository
 import com.example.treestructure.domain.usecases.CreateNodeUseCase
+import com.example.treestructure.domain.usecases.GetChildNodesUseCase
 import com.example.treestructure.domain.usecases.GetNodeByIdUseCase
 import com.example.treestructure.presentation.model.Node
 import com.example.treestructure.presentation.model.NodeModel
 import com.example.treestructure.presentation.model.state.TreeStructureUiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,28 +19,35 @@ import javax.inject.Singleton
 class NodeViewModel @Inject constructor(
     private val createNodeUseCase: CreateNodeUseCase,
     private val getNodeByIdUseCase: GetNodeByIdUseCase,
-    private val repository: NodesRepository,
+    private val getChildNodesUseCase: GetChildNodesUseCase,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     private var _state: MutableStateFlow<TreeStructureUiState<NodeModel>> =
         MutableStateFlow(TreeStructureUiState.Empty)
     val state = _state.asStateFlow()
 
-    init {
+
+    suspend fun createNode(node: Node): Long {
+        return createNodeUseCase(node)
+    }
+
+    fun getNodes(parentId: Long) {
         viewModelScope.launch {
-            repository.getAllNodes().collect {
-                Log.d("ERROR", it.toString())
-                _state.value = TreeStructureUiState.Success(
-                    NodeModel(
-                        parent = getNodeByIdUseCase(1).first(),
-                        childNodes = it
+            getChildNodesUseCase(parentId).collectLatest { list ->
+                _state.value = if (list.isEmpty()) {
+                    TreeStructureUiState.Empty
+                } else {
+                    val parent = getNodeByIdUseCase(parentId).first()
+                    TreeStructureUiState.Success(
+                        NodeModel(
+                            parent = parent,
+                            isRootNode = parentId == 1L,
+                            childNodes = list
+                        )
                     )
-                )
+                }
             }
         }
-    }
-    suspend fun createNode(node: Node) : Long {
-        return createNodeUseCase(node)
     }
 }

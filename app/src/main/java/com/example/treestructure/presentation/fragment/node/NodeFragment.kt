@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.treestructure.App
 import com.example.treestructure.R
 import com.example.treestructure.databinding.NodeFragmentBinding
@@ -29,6 +31,10 @@ class NodeFragment : Fragment() {
     private val binding by lazy { _binding!! }
     private var adapter: NodeListAdapter? = null
 
+    private val args: NodeFragmentArgs by navArgs()
+    private var parentId: Long? = null
+
+
     @Inject
     lateinit var viewModel: NodeViewModel
 
@@ -43,14 +49,20 @@ class NodeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = NodeFragmentBinding.inflate(layoutInflater)
+        parentId = args.childId
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateList()
         initButtonClickListener()
         initRecyclerView()
         listenForChanges()
+    }
+
+    private fun updateList() {
+        viewModel.getNodes(parentId = parentId ?: 1)
     }
 
 
@@ -93,21 +105,23 @@ class NodeFragment : Fragment() {
     }
 
     private fun onNodeClicked(nodeId: Long) {
-
+        NodeFragmentDirections.actionNodeFragmentSelf(nodeId).also { direction ->
+            findNavController().navigate(direction)
+        }
     }
 
     private fun initButtonClickListener() {
         binding.btnFab.setOnClickListener {
             val parent = (viewModel.state.value as TreeStructureUiState.Success).data.parent
             lifecycleScope.launch {
-                viewModel.createNode(Node(
-                    level = (parent?.level?.plus(1) ?: 0),
-                    createdAt = Calendar.getInstance().time,
-                    name = parent?.name.hashCode().toString().takeLast(20),
-                    parentId = parent?.id
-                ).also {
-                    Log.d("ERROR", it.toString())
-                })
+                viewModel.createNode(
+                    Node(
+                        level = (parent?.level?.plus(1) ?: 0),
+                        createdAt = Calendar.getInstance().time,
+                        name = parent?.name.hashCode().toString().takeLast(20),
+                        parentId = parent?.id
+                    )
+                )
             }
         }
     }

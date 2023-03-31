@@ -11,5 +11,9 @@
         <action
             android:id="@+id/action_nodeFragment_self"
             app:destination="@id/nodeFragment" />
+        <argument
+            android:name="childId"
+            app:argType="long"
+            android:defaultValue="-1L" />
     </fragment><action android:id="@+id/action_global_nodeFragment" app:destination="@id/nodeFragment"/>
 </navigation>
