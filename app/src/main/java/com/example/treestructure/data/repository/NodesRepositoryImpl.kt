@@ -54,4 +54,15 @@ class NodesRepositoryImpl
                 mapper.convertToEntity(node)
             )
         }
+
+    @Deprecated(message = "Этот метод экспериментальный. Использовать не советуется")
+    override suspend fun getAllNodes(): Flow<List<Node>> =
+        withContext(defaultDispatcher) {
+            nodeDao.getAllNodes().map { nodeList ->
+                nodeList.map { entity ->
+                    mapper.convertToModel(entity)
+                }
+            }
+        }
+
 }

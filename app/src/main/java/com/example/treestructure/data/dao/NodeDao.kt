@@ -22,4 +22,7 @@ interface NodeDao {
 
     @Delete
     fun deleteNode(node: NodeEntity): Int
+
+    @Query("SELECT * FROM node")
+    fun getAllNodes(): Flow<List<NodeEntity>>
 }

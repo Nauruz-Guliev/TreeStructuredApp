@@ -17,16 +17,16 @@ import java.util.*
 )
 data class NodeEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long? = null,
+    var id: Long? = null,
 
-    val name: String? = null,
+    var name: String? = null,
 
-    val level: Int = 0,
+    var level: Int = 0,
 
     @ColumnInfo(name = "parent_id")
-    val parentId: Long? = null,
+    var parentId: Long? = null,
 
     @TypeConverters(DateConverter::class)
     @ColumnInfo(name = "created_at")
-    val createdAt: Date? = null ,
+    var createdAt: Date? = null,
 )

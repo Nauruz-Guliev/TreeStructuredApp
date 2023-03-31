@@ -17,4 +17,6 @@ interface NodesRepository {
     suspend fun getNodeById(nodeId: Long): Flow<Node>
 
     suspend fun deleteNode(node: Node): Int
+
+    suspend fun getAllNodes(): Flow<List<Node>>
 }
