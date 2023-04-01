@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.treestructure.App
+import com.example.treestructure.R
 import com.example.treestructure.databinding.NodeFragmentBinding
 import com.example.treestructure.domain.util.HashNameGenerator
 import com.example.treestructure.presentation.fragment.node.recyclerview.NodeListAdapter
@@ -20,6 +21,7 @@ import com.example.treestructure.presentation.fragment.node.recyclerview.SwipeTo
 import com.example.treestructure.presentation.model.Node
 import com.example.treestructure.presentation.model.NodeScreenModel
 import com.example.treestructure.presentation.model.state.TreeStructureUiState
+import com.example.treestructure.presentation.utils.showSnackBar
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -72,15 +74,19 @@ class NodeFragment : Fragment() {
                     when (uiState) {
                         is TreeStructureUiState.Success<*> -> {
                             rvAdapter?.submitList((uiState.data as NodeScreenModel).childNodes)
+                            hideAllSecondaryViews()
                         }
                         is TreeStructureUiState.Empty -> {
-
+                            hideAllSecondaryViews()
+                            showEmptyStateMessage()
                         }
                         is TreeStructureUiState.Error -> {
-
+                            with(binding.root) {
+                                showSnackBar(uiState.message.toString(this.context))
+                            }
                         }
                         is TreeStructureUiState.Loading -> {
-
+                            showProgressBar()
                         }
                         else -> {
                             //initial null state
@@ -89,6 +95,21 @@ class NodeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun hideAllSecondaryViews() {
+        with(binding) {
+            progressBar.visibility = ViewGroup.GONE
+            tvEmptyState.visibility = ViewGroup.GONE
+        }
+    }
+
+    private fun showEmptyStateMessage() {
+        binding.tvEmptyState.visibility = ViewGroup.VISIBLE
+    }
+
+    private fun showProgressBar() {
+        binding.progressBar.visibility = ViewGroup.VISIBLE
     }
 
 
@@ -114,10 +135,19 @@ class NodeFragment : Fragment() {
 
     private fun initButtonClickListener() {
         binding.btnFab.setOnClickListener {
-            val parent = (viewModel.state.value as TreeStructureUiState.Success).data.parent
             lifecycleScope.launch {
-                viewModel.createNode(createNode(parent))
+                when (val state = viewModel.state.value) {
+                    is TreeStructureUiState.Success -> saveNode(state.data.parent!!)
+                    is TreeStructureUiState.Empty -> saveNode(state.data.parent!!)
+                    else -> binding.root.showSnackBar(getString(R.string.error_creating))
+                }
             }
+        }
+    }
+
+    private fun saveNode(parent: Node) {
+        lifecycleScope.launch {
+            viewModel.createNode(createNode(parent))
         }
     }
 

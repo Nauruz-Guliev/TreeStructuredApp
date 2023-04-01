@@ -8,14 +8,8 @@ import org.mapstruct.factory.Mappers
 
 @Module
 class AppModule {
-
     @Provides
     fun provideNodeMapper(): NodeMapper {
         return Mappers.getMapper(NodeMapper::class.java)
-    }
-
-    @Provides
-    fun provideHashNameGenerator(): HashNameGenerator {
-        return HashNameGenerator()
     }
 }

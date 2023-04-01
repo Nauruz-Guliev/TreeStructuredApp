@@ -36,22 +36,22 @@ class NodeViewModel @Inject constructor(
     fun getNodes(parentId: Long?) {
         _state.value = TreeStructureUiState.Loading
         viewModelScope.launch {
-            getChildNodesUseCase(parentId).distinctUntilChanged().collectLatest { list ->
+            getChildNodesUseCase(parentId).distinctUntilChanged().collect { list ->
                 val parent = getNodeByIdUseCase(parentId).first()
-                _state.value = if (parent != null) {
-                    TreeStructureUiState.Success(
-                        NodeScreenModel(
-                            parent = parent,
-                            isRootNode = parentId == 1L,
-                            childNodes = list,
-                        )
-                    )
+                val model = NodeScreenModel(
+                    parent = parent,
+                    isRootNode = parentId == 1L,
+                    childNodes = list,
+                )
+                _state.value = if (list.isNotEmpty()) {
+                    TreeStructureUiState.Success(model)
                 } else {
-                    TreeStructureUiState.Empty
+                    TreeStructureUiState.Empty(model)
                 }
             }
         }
     }
+
 
     fun deleteNode(id: Any) {
         try {

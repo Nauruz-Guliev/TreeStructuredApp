@@ -2,8 +2,9 @@ package com.example.treestructure.domain.util
 
 import org.komputing.khash.keccak.Keccak
 import org.komputing.khash.keccak.KeccakParameter
+import javax.inject.Inject
 
-class HashNameGenerator {
+class HashNameGenerator @Inject constructor() {
 
     private var lastDigitsAmount = 20
 

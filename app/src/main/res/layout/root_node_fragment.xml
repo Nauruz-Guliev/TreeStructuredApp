@@ -6,17 +6,18 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_root"
-        android:elevation="4dp"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/margin_small"
+        android:elevation="@dimen/card_elevation_medium"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/tv_root"
-            android:textSize="40sp"
+            android:textSize="@dimen/text_size_extra_large"
             android:layout_gravity="center"
             android:text="@string/root"
             android:layout_width="wrap_content"
