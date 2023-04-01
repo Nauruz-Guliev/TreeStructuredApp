@@ -5,7 +5,7 @@ Additionally, node deletion is also implemented with the left to right swipe ges
 keccak-256 algorithm. 
 
 ## :hammer_and_wrench: Tech stack
-| Technology | What it iss used for: |
+| Technology | What it is used for: |
 | --- | --- |
 | `Room` |  node storage |
 | `Dagger 2` | dependency injection |
