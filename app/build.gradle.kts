@@ -34,6 +34,7 @@ val daggerVersion = "2.28.3"
 val roomVersion = "2.5.1"
 val navVersion = "2.5.3"
 val mapStructVersion = "1.3.1.Final"
+val keccakVersion = "1.1.1"
 
 
 dependencies {
@@ -62,4 +63,8 @@ dependencies {
     //mapper
     implementation("org.mapstruct:mapstruct-jdk8:$mapStructVersion")
     kapt("org.mapstruct:mapstruct-processor:$mapStructVersion")
+
+    //ethereum hash algorithm
+    implementation("com.github.komputing.Khash:keccak:$keccakVersion")
+
 }

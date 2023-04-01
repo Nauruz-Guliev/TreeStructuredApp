@@ -13,10 +13,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.treestructure.App
 import com.example.treestructure.databinding.NodeFragmentBinding
+import com.example.treestructure.domain.util.HashNameGenerator
 import com.example.treestructure.presentation.fragment.node.recyclerview.NodeListAdapter
 import com.example.treestructure.presentation.model.Node
 import com.example.treestructure.presentation.model.NodeModel
 import com.example.treestructure.presentation.model.state.TreeStructureUiState
+import com.example.treestructure.presentation.utils.showToast
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -32,6 +34,9 @@ class NodeFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: NodeViewModel
+
+    @Inject
+    lateinit var hashNameGenerator: HashNameGenerator
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -59,8 +64,6 @@ class NodeFragment : Fragment() {
     private fun updateList() {
         viewModel.getNodes(parentId = parentId)
     }
-
-
     private fun listenForChanges() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -97,19 +100,20 @@ class NodeFragment : Fragment() {
 
     private fun initButtonClickListener() {
         binding.btnFab.setOnClickListener {
-            val parent = (viewModel.state.value as? TreeStructureUiState.Success)?.data?.parent
+            val parent = (viewModel.state.value as TreeStructureUiState.Success).data.parent
             lifecycleScope.launch {
-                viewModel.createNode(
-                    Node(
-                        level = (parent?.level?.plus(1) ?: 0),
-                        createdAt = Calendar.getInstance().time,
-                        name = parent?.name.hashCode().toString().takeLast(20),
-                        parentId = parent?.id ?: 1
-                    )
-                )
+                viewModel.createNode(createNode(parent))
             }
         }
-        updateList()
+    }
+
+    private fun createNode(parent: Node): Node {
+        return Node(
+            level = parent.level.plus(1),
+            createdAt = Calendar.getInstance().time,
+            name = hashNameGenerator.generate(parent.hashCode()),
+            parentId = parent.id
+        )
     }
 
     override fun onDestroy() {

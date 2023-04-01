@@ -33,13 +33,17 @@ class NodeViewModel @Inject constructor(
         viewModelScope.launch {
             getChildNodesUseCase(parentId).distinctUntilChanged().collectLatest { list ->
                 val parent = getNodeByIdUseCase(parentId).first()
-                _state.value = TreeStructureUiState.Success(
-                    NodeModel(
-                        parent = parent,
-                        isRootNode = parentId == 1L,
-                        childNodes = list,
+                _state.value = if (parent != null) {
+                    TreeStructureUiState.Success(
+                        NodeModel(
+                            parent = parent,
+                            isRootNode = parentId == 1L,
+                            childNodes = list,
+                        )
                     )
-                )
+                } else {
+                    TreeStructureUiState.Empty
+                }
             }
         }
     }
