@@ -10,6 +10,5 @@ interface NodesRepository {
 
     suspend fun deleteNode(node: Node): Int
 
-    suspend fun getAllNodes(): Flow<List<Node>>
     suspend fun deleteNode(id: Long): Int
 }

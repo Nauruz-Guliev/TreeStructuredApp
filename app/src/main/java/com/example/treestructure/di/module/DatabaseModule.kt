@@ -1,7 +1,6 @@
 package com.example.treestructure.di.module
 
 import android.app.Application
-import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -9,14 +8,13 @@ import com.example.treestructure.data.dao.NodeDao
 import com.example.treestructure.data.database.NodeDatabase
 import com.example.treestructure.data.entity.NodeEntity
 import com.example.treestructure.domain.util.Constants
+import com.example.treestructure.presentation.utils.HashNameGenerator
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import java.util.Calendar.getInstance
-import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module
@@ -27,11 +25,19 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideNodeDatabase(context: Application): NodeDatabase {
+    fun provideNodeDatabase(
+        context: Application,
+        hashNameGenerator: HashNameGenerator
+    ): NodeDatabase {
         return DB_INSTANCE ?: synchronized(this) {
             Room.databaseBuilder(
                 context, NodeDatabase::class.java, "NODES_DATABASE"
-            ).addCallback(NodeDatabaseDatabaseCallback(CoroutineScope(Dispatchers.IO))).build()
+            ).addCallback(
+                NodeDatabaseDatabaseCallback(
+                    CoroutineScope(Dispatchers.IO),
+                    hashNameGenerator
+                )
+            ).build()
                 .also { nodeDb ->
                     DB_INSTANCE = nodeDb
                 }
@@ -43,7 +49,8 @@ class DatabaseModule {
      */
 
     private inner class NodeDatabaseDatabaseCallback(
-        private val scope: CoroutineScope
+        private val scope: CoroutineScope,
+        private val generator: HashNameGenerator
     ) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
@@ -56,7 +63,7 @@ class DatabaseModule {
                         parentId = null,
                         createdAt = getInstance().time
                     ).also { node ->
-                        node.name = node.hashCode().toString().takeLast(20)
+                        node.name = generator.generate(node.hashCode())
                     }.also { node ->
                         database.nodeDao().create(node)
                     }
