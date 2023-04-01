@@ -15,10 +15,10 @@ interface NodeDao {
     fun create(node: NodeEntity): Long
 
     @Query("SELECT * FROM node WHERE parent_id =:parentId")
-    fun getNodesByParentId(parentId: Long): Flow<List<NodeEntity>>
+    fun getNodesByParentId(parentId: Long?): Flow<List<NodeEntity>>
 
     @Query("SELECT * FROM node WHERE id =:nodeId")
-    fun getNodeById(nodeId: Long): Flow<NodeEntity>
+    fun getNodeById(nodeId: Long?): Flow<NodeEntity>
 
     @Delete
     fun deleteNode(node: NodeEntity): Int

@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.treestructure.data.dao.NodeDao
 import com.example.treestructure.data.database.NodeDatabase
 import com.example.treestructure.data.entity.NodeEntity
+import com.example.treestructure.domain.util.Constants
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +50,7 @@ class DatabaseModule {
             DB_INSTANCE!!.let { database ->
                 scope.launch {
                     NodeEntity(
-                        id = 1,
+                        id = Constants.ROOT_NODE_ID,
                         name = null,
                         level = 0,
                         parentId = null,

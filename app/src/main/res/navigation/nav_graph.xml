@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/nodeFragment">
+    app:startDestination="@id/rootNodeFragment">
 
     <fragment
         android:id="@+id/nodeFragment"
@@ -13,7 +13,17 @@
             app:destination="@id/nodeFragment" />
         <argument
             android:name="childId"
+            android:defaultValue="0L"
             app:argType="long"
-            android:defaultValue="1L" />
-    </fragment><action android:id="@+id/action_global_nodeFragment" app:destination="@id/nodeFragment"/>
+            app:nullable="false"/>
+    </fragment>
+    <fragment
+        android:id="@+id/rootNodeFragment"
+        android:name="com.example.treestructure.presentation.fragment.root.RootNodeFragment"
+        android:label="RootNodeFragment" >
+        <action
+            android:id="@+id/action_rootNodeFragment_to_nodeFragment"
+            app:destination="@id/nodeFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_rootNodeFragment" app:destination="@id/rootNodeFragment" />
 </navigation>

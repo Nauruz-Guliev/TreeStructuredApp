@@ -12,9 +12,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         (this.application as App).appComponent.inject(this)
-
-        (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController.also {
-            it.navigate(R.id.action_global_nodeFragment)
-        }
     }
 }

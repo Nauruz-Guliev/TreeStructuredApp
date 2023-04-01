@@ -1,7 +1,6 @@
 package com.example.treestructure.data.repository
 
 import com.example.treestructure.data.dao.NodeDao
-import com.example.treestructure.data.entity.NodeEntity
 import com.example.treestructure.data.mapper.NodeMapper
 import com.example.treestructure.domain.repository.NodesRepository
 import com.example.treestructure.presentation.model.Node
@@ -27,7 +26,7 @@ class NodesRepositoryImpl
         }
 
 
-    override suspend fun getNodesByParentId(parentId: Long): Flow<List<Node>> =
+    override suspend fun getNodesByParentId(parentId: Long?): Flow<List<Node>> =
         withContext(defaultDispatcher) {
             nodeDao.getNodesByParentId(
                 parentId
@@ -39,7 +38,7 @@ class NodesRepositoryImpl
         }
 
 
-    override suspend fun getNodeById(nodeId: Long): Flow<Node> =
+    override suspend fun getNodeById(nodeId: Long?): Flow<Node> =
         withContext(defaultDispatcher) {
             nodeDao.getNodeById(
                 nodeId
@@ -64,5 +63,6 @@ class NodesRepositoryImpl
                 }
             }
         }
+
 
 }

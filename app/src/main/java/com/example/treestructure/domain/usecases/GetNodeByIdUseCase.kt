@@ -6,6 +6,6 @@ import javax.inject.Inject
 class GetNodeByIdUseCase @Inject constructor(
     private val repository: NodesRepository
 ) {
-    suspend operator fun invoke(id: Long) =
+    suspend operator fun invoke(id: Long?) =
         repository.getNodeById(id)
 }

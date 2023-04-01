@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetChildNodesUseCase @Inject constructor(
     private val repository: NodesRepository
 ) {
-    suspend operator fun invoke(parentId: Long) =
+    suspend operator fun invoke(parentId: Long?) =
         repository.getNodesByParentId(parentId)
 }

@@ -12,15 +12,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.treestructure.App
-import com.example.treestructure.R
 import com.example.treestructure.databinding.NodeFragmentBinding
 import com.example.treestructure.presentation.fragment.node.recyclerview.NodeListAdapter
 import com.example.treestructure.presentation.model.Node
 import com.example.treestructure.presentation.model.NodeModel
 import com.example.treestructure.presentation.model.state.TreeStructureUiState
-import com.example.treestructure.presentation.utils.showToast
 import kotlinx.coroutines.launch
-import java.util.Calendar
+import java.util.*
 import javax.inject.Inject
 
 class NodeFragment : Fragment() {
@@ -47,19 +45,19 @@ class NodeFragment : Fragment() {
     ): View {
         _binding = NodeFragmentBinding.inflate(layoutInflater)
         parentId = args.childId
+        updateList()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        updateList()
         initButtonClickListener()
         initRecyclerView()
         listenForChanges()
     }
 
     private fun updateList() {
-        viewModel.getNodes(parentId = parentId ?: 1)
+        viewModel.getNodes(parentId = parentId)
     }
 
 
@@ -69,24 +67,14 @@ class NodeFragment : Fragment() {
                 viewModel.state.collect { uiState ->
                     when (uiState) {
                         is TreeStructureUiState.Success<*> -> {
-                            binding.btnFab.visibility =
-                                if ((uiState.data as NodeModel).parent?.parentId != null) {
-                                    ViewGroup.VISIBLE
-                                } else {
-                                    ViewGroup.GONE
-                                }
-                            adapter?.submitList(uiState.data.childNodes.toList())
+                            adapter?.submitList((uiState.data as NodeModel).childNodes.toList())
                         }
-                        TreeStructureUiState.Empty -> {
-                            context?.showToast("empty")
-
+                        is TreeStructureUiState.Empty -> {
                         }
                         is TreeStructureUiState.Error -> {
-                            context?.showToast(uiState.message)
-
                         }
-                        TreeStructureUiState.Loading -> {
-                            context?.showToast("loading")
+                        is TreeStructureUiState.Loading -> {
+
                         }
                     }
                 }
@@ -102,8 +90,9 @@ class NodeFragment : Fragment() {
     }
 
     private fun onNodeClicked(nodeId: Long?) {
-        context?.showToast(nodeId)
-        findNavController().navigate(R.id.nodeFragment)
+        NodeFragmentDirections.actionNodeFragmentSelf(nodeId!!).also { navDirections ->
+            findNavController().navigate(navDirections)
+        }
     }
 
     private fun initButtonClickListener() {
@@ -121,5 +110,10 @@ class NodeFragment : Fragment() {
             }
         }
         updateList()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

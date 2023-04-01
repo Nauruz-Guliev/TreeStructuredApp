@@ -3,6 +3,7 @@ package com.example.treestructure.presentation.fragment.node.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.treestructure.R
 import com.example.treestructure.databinding.NodeItemBinding
 import com.example.treestructure.presentation.model.Node
 
@@ -14,8 +15,11 @@ class NodeListViewHolder(
     fun onBind(item: Node) {
         with(binding) {
             tvNodeName.text = item.name
+            tvLevel.text = binding.root.context.getString(R.string.level, item.level.toString())
         }
-        onNodeClicked?.invoke(item.id)
+        binding.root.setOnClickListener {
+            onNodeClicked?.invoke(item.id)
+        }
     }
 
     companion object {

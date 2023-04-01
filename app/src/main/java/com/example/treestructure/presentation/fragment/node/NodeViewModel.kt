@@ -1,9 +1,7 @@
 package com.example.treestructure.presentation.fragment.node
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.treestructure.domain.repository.NodesRepository
 import com.example.treestructure.domain.usecases.CreateNodeUseCase
 import com.example.treestructure.domain.usecases.GetChildNodesUseCase
 import com.example.treestructure.domain.usecases.GetNodeByIdUseCase
@@ -20,7 +18,6 @@ class NodeViewModel @Inject constructor(
     private val createNodeUseCase: CreateNodeUseCase,
     private val getNodeByIdUseCase: GetNodeByIdUseCase,
     private val getChildNodesUseCase: GetChildNodesUseCase,
-
     ) : ViewModel() {
 
     private var _state: MutableStateFlow<TreeStructureUiState<NodeModel>> =
@@ -32,18 +29,15 @@ class NodeViewModel @Inject constructor(
         return createNodeUseCase(node)
     }
 
-    fun getNodes(parentId: Long) {
+    fun getNodes(parentId: Long?) {
         viewModelScope.launch {
-            getChildNodesUseCase(parentId).distinctUntilChanged().filter {
-                it.isNotEmpty()
-            }.collectLatest { list ->
-                Log.d("ERROR", list.toString())
+            getChildNodesUseCase(parentId).distinctUntilChanged().collectLatest { list ->
                 val parent = getNodeByIdUseCase(parentId).first()
                 _state.value = TreeStructureUiState.Success(
                     NodeModel(
                         parent = parent,
                         isRootNode = parentId == 1L,
-                        childNodes = list
+                        childNodes = list,
                     )
                 )
             }

@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">TreeStructure</string>
     <string name="add">add</string>
+    <string name="root">Root</string>
+    <string name="level">Level: %1s</string>
+    <string name="child_count">Child count: %1s</string>
+
 </resources>
