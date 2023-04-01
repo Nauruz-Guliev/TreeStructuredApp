@@ -2,22 +2,21 @@ package com.example.treestructure.presentation.fragment.root
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.treestructure.App
 import com.example.treestructure.databinding.RootNodeFragmentBinding
+import com.example.treestructure.presentation.base.BaseFragment
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RootNodeFragment : Fragment() {
-    private var _binding: RootNodeFragmentBinding? = null
-    private val binding by lazy { _binding!! }
+class RootNodeFragment : BaseFragment<RootNodeFragmentBinding>(
+    RootNodeFragmentBinding::inflate
+) {
 
     @Inject
     lateinit var viewModel: RootNodeViewModel
@@ -45,15 +44,6 @@ class RootNodeFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = RootNodeFragmentBinding.inflate(layoutInflater)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCardClickListener()
@@ -66,10 +56,5 @@ class RootNodeFragment : Fragment() {
                 findNavController().navigate(it)
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

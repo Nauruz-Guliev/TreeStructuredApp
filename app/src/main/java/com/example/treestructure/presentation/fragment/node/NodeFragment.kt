@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -16,6 +15,7 @@ import com.example.treestructure.App
 import com.example.treestructure.R
 import com.example.treestructure.databinding.NodeFragmentBinding
 import com.example.treestructure.domain.util.HashNameGenerator
+import com.example.treestructure.presentation.base.BaseFragment
 import com.example.treestructure.presentation.fragment.node.recyclerview.NodeListAdapter
 import com.example.treestructure.presentation.fragment.node.recyclerview.SwipeToDeleteHelper
 import com.example.treestructure.presentation.model.Node
@@ -26,12 +26,10 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-class NodeFragment : Fragment() {
-
-    private var _binding: NodeFragmentBinding? = null
-    private val binding by lazy { _binding!! }
+class NodeFragment : BaseFragment<NodeFragmentBinding>(
+    NodeFragmentBinding::inflate
+) {
     private var rvAdapter: NodeListAdapter? = null
-
     private val args: NodeFragmentArgs by navArgs()
     private var parentId: Long? = null
 
@@ -46,19 +44,13 @@ class NodeFragment : Fragment() {
         (activity?.application as App).appComponent.inject(this)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = NodeFragmentBinding.inflate(layoutInflater)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         parentId = args.childId
-        updateList()
-        return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateList()
         initButtonClickListener()
         initRecyclerView()
         listenForChanges()
@@ -158,10 +150,5 @@ class NodeFragment : Fragment() {
             name = hashNameGenerator.generate(parent.hashCode()),
             parentId = parent.id
         )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }
