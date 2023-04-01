@@ -3,7 +3,7 @@ package com.example.treestructure.data.repository
 import com.example.treestructure.data.dao.NodeDao
 import com.example.treestructure.data.mapper.NodeMapper
 import com.example.treestructure.domain.repository.NodesRepository
-import com.example.treestructure.presentation.model.Node
+import com.example.treestructure.domain.models.Node
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -1,7 +1,7 @@
 package com.example.treestructure.domain.usecases
 
 import com.example.treestructure.domain.repository.NodesRepository
-import com.example.treestructure.presentation.model.Node
+import com.example.treestructure.domain.models.Node
 import javax.inject.Inject
 
 class CreateNodeUseCase @Inject constructor(

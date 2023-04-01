@@ -1,4 +1,4 @@
-package com.example.treestructure.domain.models
+package com.example.treestructure.domain.util
 
 import android.content.Context
 import androidx.annotation.StringRes

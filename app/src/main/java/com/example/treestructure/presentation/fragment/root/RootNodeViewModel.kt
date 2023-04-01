@@ -1,11 +1,10 @@
 package com.example.treestructure.presentation.fragment.root
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.treestructure.domain.usecases.GetNodeByIdUseCase
 import com.example.treestructure.domain.util.Constants
-import com.example.treestructure.presentation.model.Node
+import com.example.treestructure.domain.models.Node
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

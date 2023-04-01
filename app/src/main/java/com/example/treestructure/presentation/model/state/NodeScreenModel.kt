@@ -1,4 +1,6 @@
-package com.example.treestructure.presentation.model
+package com.example.treestructure.presentation.model.state
+
+import com.example.treestructure.domain.models.Node
 
 data class NodeScreenModel (
     var parent: Node?,

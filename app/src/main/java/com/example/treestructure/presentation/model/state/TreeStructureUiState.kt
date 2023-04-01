@@ -1,6 +1,6 @@
 package com.example.treestructure.presentation.model.state
 
-import com.example.treestructure.domain.models.TextResource
+import com.example.treestructure.domain.util.TextResource
 
 sealed class TreeStructureUiState<out T> {
     data class Empty<Parent>(val data: Parent) : TreeStructureUiState<Parent>()

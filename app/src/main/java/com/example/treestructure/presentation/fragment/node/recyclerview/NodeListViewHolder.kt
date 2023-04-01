@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.treestructure.R
 import com.example.treestructure.databinding.NodeItemBinding
-import com.example.treestructure.presentation.model.Node
+import com.example.treestructure.domain.models.Node
 
 class NodeListViewHolder(
     private val binding: NodeItemBinding,

@@ -3,13 +3,13 @@ package com.example.treestructure.presentation.fragment.node
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.treestructure.R
-import com.example.treestructure.domain.models.TextResource
+import com.example.treestructure.domain.util.TextResource
 import com.example.treestructure.domain.usecases.CreateNodeUseCase
 import com.example.treestructure.domain.usecases.DeleteNodeByIdUseCase
 import com.example.treestructure.domain.usecases.GetChildNodesUseCase
 import com.example.treestructure.domain.usecases.GetNodeByIdUseCase
-import com.example.treestructure.presentation.model.Node
-import com.example.treestructure.presentation.model.NodeScreenModel
+import com.example.treestructure.domain.models.Node
+import com.example.treestructure.presentation.model.state.NodeScreenModel
 import com.example.treestructure.presentation.model.state.TreeStructureUiState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

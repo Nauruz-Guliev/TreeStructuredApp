@@ -3,7 +3,7 @@ package com.example.treestructure.presentation.fragment.node.recyclerview
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.treestructure.presentation.model.Node
+import com.example.treestructure.domain.models.Node
 
 
 class NodeListAdapter(

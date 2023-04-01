@@ -1,11 +1,6 @@
 package com.example.treestructure.domain.repository
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.example.treestructure.data.entity.NodeEntity
-import com.example.treestructure.presentation.model.Node
+import com.example.treestructure.domain.models.Node
 import kotlinx.coroutines.flow.Flow
 
 interface NodesRepository {

@@ -22,12 +22,10 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent {
-
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance app: Application): AppComponent
     }
-
     fun inject(activity: MainActivity)
     fun inject(fragment: NodeFragment)
     fun inject(fragment: RootNodeFragment)

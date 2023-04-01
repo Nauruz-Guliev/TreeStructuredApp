@@ -1,4 +1,4 @@
-package com.example.treestructure.presentation.model
+package com.example.treestructure.domain.models
 
 
 import com.example.treestructure.data.utils.converter.DateConverter

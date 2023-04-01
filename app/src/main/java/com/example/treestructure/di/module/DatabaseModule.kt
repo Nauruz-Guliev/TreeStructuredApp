@@ -39,7 +39,7 @@ class DatabaseModule {
     }
 
     /**
-     * Класс используется для создания верхушки дерева (верхней Node'ы)
+     * Класс используется для создания верхушки дерева (Root)
      */
 
     private inner class NodeDatabaseDatabaseCallback(

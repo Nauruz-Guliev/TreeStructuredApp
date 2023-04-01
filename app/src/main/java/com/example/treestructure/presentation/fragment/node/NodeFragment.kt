@@ -2,7 +2,6 @@ package com.example.treestructure.presentation.fragment.node
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
@@ -18,8 +17,8 @@ import com.example.treestructure.domain.util.HashNameGenerator
 import com.example.treestructure.presentation.base.BaseFragment
 import com.example.treestructure.presentation.fragment.node.recyclerview.NodeListAdapter
 import com.example.treestructure.presentation.fragment.node.recyclerview.SwipeToDeleteHelper
-import com.example.treestructure.presentation.model.Node
-import com.example.treestructure.presentation.model.NodeScreenModel
+import com.example.treestructure.domain.models.Node
+import com.example.treestructure.presentation.model.state.NodeScreenModel
 import com.example.treestructure.presentation.model.state.TreeStructureUiState
 import com.example.treestructure.presentation.utils.showSnackBar
 import kotlinx.coroutines.launch
