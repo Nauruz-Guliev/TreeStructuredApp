@@ -1,18 +1,17 @@
 package com.example.treestructure.presentation.fragment.node
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.treestructure.domain.repository.NodesRepository
+import com.example.treestructure.R
+import com.example.treestructure.domain.util.TextResource
 import com.example.treestructure.domain.usecases.CreateNodeUseCase
+import com.example.treestructure.domain.usecases.DeleteNodeByIdUseCase
+import com.example.treestructure.domain.usecases.GetChildNodesUseCase
 import com.example.treestructure.domain.usecases.GetNodeByIdUseCase
-import com.example.treestructure.presentation.model.Node
-import com.example.treestructure.presentation.model.NodeModel
+import com.example.treestructure.domain.models.Node
+import com.example.treestructure.presentation.model.state.NodeScreenModel
 import com.example.treestructure.presentation.model.state.TreeStructureUiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,28 +20,48 @@ import javax.inject.Singleton
 class NodeViewModel @Inject constructor(
     private val createNodeUseCase: CreateNodeUseCase,
     private val getNodeByIdUseCase: GetNodeByIdUseCase,
-    private val repository: NodesRepository,
-
+    private val getChildNodesUseCase: GetChildNodesUseCase,
+    private val deleteNodeByIdUseCase: DeleteNodeByIdUseCase,
 ) : ViewModel() {
 
-    private var _state: MutableStateFlow<TreeStructureUiState<NodeModel>> =
-        MutableStateFlow(TreeStructureUiState.Empty)
-    val state = _state.asStateFlow()
+    private var _state: MutableStateFlow<TreeStructureUiState<NodeScreenModel>?> =
+        MutableStateFlow(null)
+    val state: StateFlow<TreeStructureUiState<NodeScreenModel>?> = _state.asStateFlow()
 
-    init {
+
+    suspend fun createNode(node: Node): Long {
+        return createNodeUseCase(node)
+    }
+
+    fun getNodes(parentId: Long?) {
+        _state.value = TreeStructureUiState.Loading
         viewModelScope.launch {
-            repository.getAllNodes().collect {
-                Log.d("ERROR", it.toString())
-                _state.value = TreeStructureUiState.Success(
-                    NodeModel(
-                        parent = getNodeByIdUseCase(1).first(),
-                        childNodes = it
-                    )
+            getChildNodesUseCase(parentId).distinctUntilChanged().collect { list ->
+                val parent = getNodeByIdUseCase(parentId).first()
+                val model = NodeScreenModel(
+                    parent = parent,
+                    isRootNode = parentId == 1L,
+                    childNodes = list,
                 )
+                _state.value = if (list.isNotEmpty()) {
+                    TreeStructureUiState.Success(model)
+                } else {
+                    TreeStructureUiState.Empty(model)
+                }
             }
         }
     }
-    suspend fun createNode(node: Node) : Long {
-        return createNodeUseCase(node)
+
+
+    fun deleteNode(id: Any) {
+        try {
+            viewModelScope.launch {
+                deleteNodeByIdUseCase(id as Long)
+            }
+        } catch (ex: Exception) {
+            _state.value = TreeStructureUiState.Error(
+                TextResource(R.string.error_node_delete)
+            )
+        }
     }
 }

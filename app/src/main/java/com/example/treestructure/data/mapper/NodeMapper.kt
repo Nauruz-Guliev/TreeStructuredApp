@@ -1,7 +1,7 @@
 package com.example.treestructure.data.mapper
 
 import com.example.treestructure.data.entity.NodeEntity
-import com.example.treestructure.presentation.model.Node
+import com.example.treestructure.domain.models.Node
 import org.mapstruct.Mapper
 
 @Mapper

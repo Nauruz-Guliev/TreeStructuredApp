@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">TreeStructure</string>
     <string name="add">add</string>
+    <string name="root">Root</string>
+    <string name="level">Level: %1s</string>
+    <string name="child_count">Child count: %1s</string>
+    <string name="error_node_delete">Failed to delete the node</string>
+    <string name="there_is_no_nodes_at_this_level_yet">There is no nodes at this level yet</string>
+    <string name="error_creating">Failed to create a node</string>
+
 </resources>

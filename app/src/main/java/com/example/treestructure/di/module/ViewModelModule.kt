@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.treestructure.domain.viewmodel.ViewModelFactory
 import com.example.treestructure.domain.viewmodel.ViewModelKey
 import com.example.treestructure.presentation.fragment.node.NodeViewModel
+import com.example.treestructure.presentation.fragment.root.RootNodeViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -18,4 +19,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NodeViewModel::class)
     abstract fun nodeViewModel(viewModel: NodeViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RootNodeViewModel::class)
+    abstract fun rootNodeViewModel(viewModel: RootNodeViewModel): ViewModel
 }

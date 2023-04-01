@@ -1,10 +1,9 @@
 package com.example.treestructure.data.repository
 
 import com.example.treestructure.data.dao.NodeDao
-import com.example.treestructure.data.entity.NodeEntity
 import com.example.treestructure.data.mapper.NodeMapper
 import com.example.treestructure.domain.repository.NodesRepository
-import com.example.treestructure.presentation.model.Node
+import com.example.treestructure.domain.models.Node
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -27,7 +26,7 @@ class NodesRepositoryImpl
         }
 
 
-    override suspend fun getNodesByParentId(parentId: Long): Flow<List<Node>> =
+    override suspend fun getNodesByParentId(parentId: Long?): Flow<List<Node>> =
         withContext(defaultDispatcher) {
             nodeDao.getNodesByParentId(
                 parentId
@@ -39,7 +38,7 @@ class NodesRepositoryImpl
         }
 
 
-    override suspend fun getNodeById(nodeId: Long): Flow<Node> =
+    override suspend fun getNodeById(nodeId: Long?): Flow<Node> =
         withContext(defaultDispatcher) {
             nodeDao.getNodeById(
                 nodeId
@@ -65,4 +64,8 @@ class NodesRepositoryImpl
             }
         }
 
+    override suspend fun deleteNode(id: Long): Int =
+        withContext(defaultDispatcher) {
+            nodeDao.deleteNode(id)
+        }
 }

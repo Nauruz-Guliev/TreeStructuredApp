@@ -5,3 +5,12 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.0" apply false
     kotlin("kapt") version "1.8.10"
 }
+
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3")
+    }
+}
