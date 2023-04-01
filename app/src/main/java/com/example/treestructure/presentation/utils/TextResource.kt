@@ -1,4 +1,4 @@
-package com.example.treestructure.domain.util
+package com.example.treestructure.presentation.utils
 
 import android.content.Context
 import androidx.annotation.StringRes

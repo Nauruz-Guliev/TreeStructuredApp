@@ -1,4 +1,4 @@
-package com.example.treestructure.domain.viewmodel
+package com.example.treestructure.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

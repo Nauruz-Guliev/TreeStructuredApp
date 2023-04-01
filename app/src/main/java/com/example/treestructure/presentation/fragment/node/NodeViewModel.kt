@@ -3,7 +3,7 @@ package com.example.treestructure.presentation.fragment.node
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.treestructure.R
-import com.example.treestructure.domain.util.TextResource
+import com.example.treestructure.presentation.utils.TextResource
 import com.example.treestructure.domain.usecases.CreateNodeUseCase
 import com.example.treestructure.domain.usecases.DeleteNodeByIdUseCase
 import com.example.treestructure.domain.usecases.GetChildNodesUseCase

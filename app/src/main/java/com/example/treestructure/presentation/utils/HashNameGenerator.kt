@@ -1,4 +1,4 @@
-package com.example.treestructure.domain.util
+package com.example.treestructure.presentation.utils
 
 import org.komputing.khash.keccak.Keccak
 import org.komputing.khash.keccak.KeccakParameter
@@ -25,4 +25,3 @@ private fun ByteArray.toHex(): String =
     joinToString(separator = "") { eachByte ->
         "%02x".format(eachByte)
     }
-

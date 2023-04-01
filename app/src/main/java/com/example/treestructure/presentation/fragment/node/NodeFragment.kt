@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.treestructure.App
 import com.example.treestructure.R
 import com.example.treestructure.databinding.NodeFragmentBinding
-import com.example.treestructure.domain.util.HashNameGenerator
+import com.example.treestructure.presentation.utils.HashNameGenerator
 import com.example.treestructure.presentation.base.BaseFragment
 import com.example.treestructure.presentation.fragment.node.recyclerview.NodeListAdapter
 import com.example.treestructure.presentation.fragment.node.recyclerview.SwipeToDeleteHelper

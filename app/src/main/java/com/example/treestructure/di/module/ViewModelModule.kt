@@ -2,8 +2,8 @@ package com.example.treestructure.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.treestructure.domain.viewmodel.ViewModelFactory
-import com.example.treestructure.domain.viewmodel.ViewModelKey
+import com.example.treestructure.di.viewmodel.ViewModelFactory
+import com.example.treestructure.di.viewmodel.ViewModelKey
 import com.example.treestructure.presentation.fragment.node.NodeViewModel
 import com.example.treestructure.presentation.fragment.root.RootNodeViewModel
 import dagger.Binds
