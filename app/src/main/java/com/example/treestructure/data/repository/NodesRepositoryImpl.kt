@@ -64,5 +64,8 @@ class NodesRepositoryImpl
             }
         }
 
-
+    override suspend fun deleteNode(id: Long): Int =
+        withContext(defaultDispatcher) {
+            nodeDao.deleteNode(id)
+        }
 }

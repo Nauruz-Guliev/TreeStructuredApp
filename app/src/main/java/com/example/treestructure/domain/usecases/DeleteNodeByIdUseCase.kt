@@ -1,0 +1,11 @@
+package com.example.treestructure.domain.usecases
+
+import com.example.treestructure.domain.repository.NodesRepository
+import javax.inject.Inject
+
+class DeleteNodeByIdUseCase @Inject constructor(
+    private val repository: NodesRepository
+) {
+    suspend operator fun invoke(id: Long) =
+        repository.deleteNode(id)
+}

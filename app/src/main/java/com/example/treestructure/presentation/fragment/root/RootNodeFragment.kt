@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class RootNodeFragment : Fragment() {
     private var _binding: RootNodeFragmentBinding? = null
-    val binding by lazy { _binding!! }
+    private val binding by lazy { _binding!! }
 
     @Inject
     lateinit var viewModel: RootNodeViewModel

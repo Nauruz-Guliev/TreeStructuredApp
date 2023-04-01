@@ -11,14 +11,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.treestructure.App
 import com.example.treestructure.databinding.NodeFragmentBinding
 import com.example.treestructure.domain.util.HashNameGenerator
 import com.example.treestructure.presentation.fragment.node.recyclerview.NodeListAdapter
+import com.example.treestructure.presentation.fragment.node.recyclerview.SwipeToDeleteHelper
 import com.example.treestructure.presentation.model.Node
-import com.example.treestructure.presentation.model.NodeModel
+import com.example.treestructure.presentation.model.NodeScreenModel
 import com.example.treestructure.presentation.model.state.TreeStructureUiState
-import com.example.treestructure.presentation.utils.showToast
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -27,7 +28,7 @@ class NodeFragment : Fragment() {
 
     private var _binding: NodeFragmentBinding? = null
     private val binding by lazy { _binding!! }
-    private var adapter: NodeListAdapter? = null
+    private var rvAdapter: NodeListAdapter? = null
 
     private val args: NodeFragmentArgs by navArgs()
     private var parentId: Long? = null
@@ -70,14 +71,19 @@ class NodeFragment : Fragment() {
                 viewModel.state.collect { uiState ->
                     when (uiState) {
                         is TreeStructureUiState.Success<*> -> {
-                            adapter?.submitList((uiState.data as NodeModel).childNodes.toList())
+                            rvAdapter?.submitList((uiState.data as NodeScreenModel).childNodes)
                         }
                         is TreeStructureUiState.Empty -> {
+
                         }
                         is TreeStructureUiState.Error -> {
+
                         }
                         is TreeStructureUiState.Loading -> {
 
+                        }
+                        else -> {
+                            //initial null state
                         }
                     }
                 }
@@ -87,9 +93,17 @@ class NodeFragment : Fragment() {
 
 
     private fun initRecyclerView() {
-        adapter = NodeListAdapter(::onNodeClicked).also {
-            binding.rvNodes.adapter = it
+        with(binding.rvNodes) {
+            rvAdapter = NodeListAdapter(::onNodeClicked).also {
+                adapter = it
+            }
+            ItemTouchHelper(SwipeToDeleteHelper(::onNodeDeleted))
+                .attachToRecyclerView(this)
         }
+    }
+
+    private fun onNodeDeleted(id: Any) {
+        viewModel.deleteNode(id)
     }
 
     private fun onNodeClicked(nodeId: Long?) {

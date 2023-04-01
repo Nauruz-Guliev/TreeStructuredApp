@@ -14,6 +14,7 @@ class NodeListViewHolder(
     RecyclerView.ViewHolder(binding.root) {
     fun onBind(item: Node) {
         with(binding) {
+            binding.root.tag = item.id
             tvNodeName.text = item.name
             tvLevel.text = binding.root.context.getString(R.string.level, item.level.toString())
         }

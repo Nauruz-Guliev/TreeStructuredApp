@@ -23,6 +23,9 @@ interface NodeDao {
     @Delete
     fun deleteNode(node: NodeEntity): Int
 
+    @Query("DELETE FROM node WHERE id = :id")
+    fun deleteNode(id: Long): Int
+
     @Query("SELECT * FROM node")
     fun getAllNodes(): Flow<List<NodeEntity>>
 }

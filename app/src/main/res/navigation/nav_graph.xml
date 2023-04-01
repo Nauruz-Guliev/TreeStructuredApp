@@ -25,5 +25,4 @@
             android:id="@+id/action_rootNodeFragment_to_nodeFragment"
             app:destination="@id/nodeFragment" />
     </fragment>
-    <action android:id="@+id/action_global_rootNodeFragment" app:destination="@id/rootNodeFragment" />
 </navigation>
